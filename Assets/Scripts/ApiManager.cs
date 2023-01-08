@@ -8,8 +8,6 @@ using UnityEngine.Networking;
 public class ApiManager : MonoBehaviour
 {
     [SerializeField] private string host;
-    [SerializeField] private string mySqlUser;
-    [SerializeField] private string mySqlPassword;
 
     [SerializeField] private TMP_InputField registerUsername;
     [SerializeField] private TMP_InputField registerPassword;
@@ -20,6 +18,7 @@ public class ApiManager : MonoBehaviour
 
     public UnityEvent<User> LoggedIn = new UnityEvent<User>();
     public UnityEvent<string> LoginError = new UnityEvent<string>();
+    public UnityEvent<string> RegisterMessage = new UnityEvent<string>();
     public static ApiManager instance;
 
     private void Awake()
@@ -30,10 +29,13 @@ public class ApiManager : MonoBehaviour
 
     private bool IsValidPassword(string p)
     {
+        string error = "";
         if (p.Length < 6)
-            print("6 or more symbols");
+            error = "6 or more symbols";
         else if(p != registerPasswordRepeat.text)
-            print("Passwords don't match");
+            error = "Passwords don't match";
+
+        RegisterMessage?.Invoke(error);
 
         return p.Length >= 6 && p == registerPasswordRepeat.text; 
     }
@@ -98,6 +100,7 @@ public class ApiManager : MonoBehaviour
             catch (Exception e)
             {
                 print(www.downloadHandler.text);
+                LoginError?.Invoke(www.downloadHandler.text);
                 print(e.ToString());
             }
         };
@@ -114,18 +117,24 @@ public class ApiManager : MonoBehaviour
 
             var www = UnityWebRequest.Post($"{host}/register.php", form);
             yield return www.SendWebRequest();
-            GetResult(www);
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                throw new Exception(www.downloadHandler.text);
+            }
+            RegisterMessage?.Invoke(www.downloadHandler.text);
 
         }
+
     }
 
 
 
-    private void GetResult(UnityWebRequest w)
+    private string GetResult(UnityWebRequest w)
     {
-        if (w.result != UnityWebRequest.Result.Success) throw new Exception(w.downloadHandler.text);
-        else print(w.downloadHandler.text);
 
+
+        return w.downloadHandler.text;
     }
 
 }

@@ -5,8 +5,6 @@ using UnityEngine.Events;
 public class PlayerInput : NetworkBehaviour
 {
     public UnityEvent OnShoot = new UnityEvent();
-    public UnityEvent<float> OnHorizontalMove = new UnityEvent<float>();
-    public UnityEvent<float> OnVerticalMove = new UnityEvent<float>();
     public UnityEvent<Vector2> OnMove = new UnityEvent<Vector2>();
 
     private void Update()

@@ -7,6 +7,8 @@ public class WelcomeScreenUI : MonoBehaviour
 {
     [SerializeField] private Panel[] panels;
     [SerializeField] private GameObject menu;
+    [SerializeField] private TextMeshProUGUI registerMessageText;
+    [SerializeField] private TextMeshProUGUI loginMessageText;
     private bool userAuth = false;
     public static WelcomeScreenUI Shared;
     private ApiManager api;
@@ -26,6 +28,16 @@ public class WelcomeScreenUI : MonoBehaviour
             var password = PlayerPrefs.GetString(PlayerPrefsNames.USER_PASSWORD);
             api.Login(login, password);
         }
+    }
+
+    public void RegisterMessage(string t)
+    {
+        registerMessageText.text = t;
+    }
+
+    public void LoginMessage(string t)
+    {
+        loginMessageText.text = t;
     }
 
     public void OpenPanel(int p)
