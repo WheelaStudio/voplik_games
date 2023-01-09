@@ -13,6 +13,12 @@ public class NetManager : NetworkManager
         base.Start();
         controller = UserController.Shared;
         map = Map.instance;
+/*        if(Application.platform != RuntimePlatform.WindowsServer && Application.platform != RuntimePlatform.LinuxPlayer && Application.platform != RuntimePlatform.OSXServer)
+        {
+            StartClient();
+        }*/
+
+
     }
 
     private float RandomCoordinate(float max)

@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 83407207}
   - component: {fileID: 83407210}
   - component: {fileID: 83407209}
-  - component: {fileID: 83407208}
+  - component: {fileID: 83407211}
   m_Layer: 0
   m_Name: 'NetManager '
   m_TagString: Untagged
@@ -157,20 +157,6 @@ Transform:
   m_Father: {fileID: 2099269926}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &83407208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 83407206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offsetX: 0
-  offsetY: 0
 --- !u!114 &83407209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,7 +178,7 @@ MonoBehaviour:
   onlineScene: 
   transport: {fileID: 83407210}
   networkAddress: localhost
-  maxConnections: 100
+  maxConnections: 20
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 4130898304196731977, guid: 4eecb880512d81f4db7467b64172ff78, type: 3}
   autoCreatePlayer: 0
@@ -229,6 +215,20 @@ MonoBehaviour:
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
+--- !u!114 &83407211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 83407206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetX: 0
+  offsetY: 0
 --- !u!1 &139301780
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,7 +1146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {x: 10, y: 10}
-  additionlGrid: {x: 5, y: 5}
+  additionlGrid: {x: 0, y: 0}
   tile: {fileID: 8919121629487555761, guid: 0c76cb7fd06ee154c886e6e1dd13e2eb, type: 3}
   tileSize: {x: 10, y: 10}
 --- !u!4 &1850274033
@@ -1163,6 +1163,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1877414838
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1877414840}
+  - component: {fileID: 1877414839}
+  m_Layer: 0
+  m_Name: UserControllerTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1877414839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877414838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b41d2ad7a9599d4399c114ada1af093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  user:
+    UserName: player
+    Coins: 0
+    Id: 0
+  apiManager: {fileID: 0}
+  testMode: 1
+--- !u!4 &1877414840
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877414838}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -48.851395, y: 48.995865, z: 1.1900806}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2099269925
 GameObject:
