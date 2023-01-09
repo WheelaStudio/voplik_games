@@ -1175,7 +1175,7 @@ GameObject:
   - component: {fileID: 1877414840}
   - component: {fileID: 1877414839}
   m_Layer: 0
-  m_Name: UserControllerTest
+  m_Name: User
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1190,7 +1190,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1877414838}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b41d2ad7a9599d4399c114ada1af093, type: 3}
+  m_Script: {fileID: 11500000, guid: f454f746bb41b774a85ef40312509e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   user:
@@ -1198,7 +1198,6 @@ MonoBehaviour:
     Coins: 0
     Id: 0
   apiManager: {fileID: 0}
-  testMode: 1
 --- !u!4 &1877414840
 Transform:
   m_ObjectHideFlags: 0

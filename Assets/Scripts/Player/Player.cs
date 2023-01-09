@@ -35,6 +35,7 @@ public class Player : NetworkBehaviour
     public int Coins { get => coins; }
 
 
+
     private void SyncCoins(int oldValue, int newValue)
     {
         coins = newValue;

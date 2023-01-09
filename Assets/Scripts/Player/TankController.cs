@@ -10,6 +10,9 @@ public class TankController : Player
     [SerializeField] private GameObject bullet;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float maxBulletDistance;
+    [SerializeField] private float fireRate;
+
+    [SerializeField] private bool canShoot = true;
     private Rigidbody2D rb;
     private Map map;
     private Vector2 mapGlobalSize;
@@ -55,6 +58,15 @@ public class TankController : Player
 
     public void HandleShoot()
     {
+        if (canShoot)
+        {
+            StartCoroutine(ShootI());
+        }
+    }
+
+    private IEnumerator ShootI()
+    {
+        canShoot = false;
         if (!isLocalPlayer)
         {
             CmdSpawnBullet();
@@ -63,6 +75,8 @@ public class TankController : Player
         {
             SpawnBullet();
         }
+        yield return new WaitForSeconds(fireRate);
+        canShoot = true;
     }
 
     public void HandleMove(Vector2 dir)
