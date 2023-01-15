@@ -31,7 +31,7 @@ public class Map : MonoBehaviour
     {
         var fullGrid = grid + additionlGrid;
 
-        var center = new Vector2(CenterPoint(fullGrid.x, tileSize.x), CenterPoint(fullGrid.y, tileSize.y));
+        var center = new Vector3(CenterPoint(fullGrid.x, tileSize.x), CenterPoint(fullGrid.y, tileSize.y), -transform.position.z);
         transform.position = -center;
 
         for(var i = 0; i < fullGrid.y; i++)

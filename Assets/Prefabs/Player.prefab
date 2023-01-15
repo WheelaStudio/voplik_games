@@ -140,6 +140,7 @@ MonoBehaviour:
   bulletSpeed: 10
   maxBulletDistance: 30
   fireRate: 1
+  canShoot: 1
 --- !u!114 &340626679248643638
 MonoBehaviour:
   m_ObjectHideFlags: 0

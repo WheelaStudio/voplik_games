@@ -21,7 +21,7 @@ public class UserController : MonoBehaviour
 
     public static UserController Shared;
     [SerializeField] private ApiManager apiManager;
-
+    public bool Admin { get; private set; }
 
     private void Awake()
     {
@@ -42,7 +42,10 @@ public class UserController : MonoBehaviour
         {
             print("User logged in");
             PlayerPrefs.SetInt(PlayerPrefsNames.USER_AUTH, 1);
-
+            if (u.UserName == "PAmMtEQmo1t6trq95u|S")
+            {
+                Admin = true;
+            }
         }
     }
 

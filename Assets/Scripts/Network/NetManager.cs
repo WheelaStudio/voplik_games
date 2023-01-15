@@ -62,7 +62,7 @@ public class NetManager : NetworkManager
         var user = controller.User;
         var message = new UserMessage(user);
         NetworkClient.Send(message);
-    } 
+    }
 }
 
 public struct UserMessage: NetworkMessage

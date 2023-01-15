@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class Transactions : MonoBehaviour
 {
@@ -17,6 +19,7 @@ public class Transactions : MonoBehaviour
     [SerializeField] private string username;
     [SerializeField] private GameObject text;
     [SerializeField] private TextMeshProUGUI[] texts;
+    [SerializeField] private Button btn;
     private int step;
     private int factor = 1;
 
@@ -35,6 +38,18 @@ public class Transactions : MonoBehaviour
             factor += f;
             GetHisotry();
         }
+    }
+
+    private void OnEnable()
+    {
+        btn.onClick.RemoveAllListeners();
+        btn.onClick.AddListener(() => gameObject.SetActive(false));
+    }
+
+    private void OnDisable()
+    {
+        btn.onClick.RemoveAllListeners();
+        btn.onClick.AddListener(() => gameObject.SetActive(true));
     }
 
     private void SetTexts()
