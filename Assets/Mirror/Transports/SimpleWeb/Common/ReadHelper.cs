@@ -61,6 +61,11 @@ namespace Mirror.SimpleWeb
             {
                 return false;
             }
+            catch (AggregateException e)
+            {
+                Log.Exception(e.InnerException);
+                return false;
+            }
             catch (Exception e)
             {
                 Log.Exception(e);

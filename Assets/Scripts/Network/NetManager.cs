@@ -1,6 +1,8 @@
 using Mirror;
+using System;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class NetManager : NetworkManager
 {
@@ -13,10 +15,10 @@ public class NetManager : NetworkManager
         base.Start();
         controller = UserController.Shared;
         map = Map.instance;
-/*        if(Application.platform != RuntimePlatform.WindowsServer && Application.platform != RuntimePlatform.LinuxPlayer && Application.platform != RuntimePlatform.OSXServer)
+        if (!CheckServerBuild.ServerBuild())
         {
             StartClient();
-        }*/
+        }
 
 
     }
@@ -37,15 +39,15 @@ public class NetManager : NetworkManager
         var user = new User(message);
         var tank = go.GetComponent<TankController>();
         tank.thisNick.text = user.UserName;
-        
+
         NetworkServer.AddPlayerForConnection(conn, go);
         tank.SetUser(user);
         print(user.UserName);
     }
-
     public override void OnStartServer()
     {
         base.OnStartServer();
+        print("Server Started");
         NetworkServer.RegisterHandler<UserMessage>(OnCreateCharacter);
     }
 
@@ -53,10 +55,7 @@ public class NetManager : NetworkManager
     {
         base.OnClientConnect();
         ActivatePLayerSpawn();
-
     }
-
-
 
     private void ActivatePLayerSpawn()
     {

@@ -19,6 +19,8 @@ public class ApiManager : MonoBehaviour
     public UnityEvent<User> LoggedIn = new UnityEvent<User>();
     public UnityEvent<string> LoginError = new UnityEvent<string>();
     public UnityEvent<string> RegisterMessage = new UnityEvent<string>();
+    public UnityEvent<SendTransactionMessage> SendCoinsMessage = new UnityEvent<SendTransactionMessage>();
+    public UnityEvent<TransactionHistory> GetTransactions = new UnityEvent<TransactionHistory>();
     public static ApiManager instance;
 
     private void Awake()
@@ -61,6 +63,67 @@ public class ApiManager : MonoBehaviour
         StartCoroutine(IAddCoins(coins, id));
     }
 
+    public void SendCoins(string from, string to, int coins)
+    {
+        StartCoroutine(ISendCoins(from, to, coins));
+    }
+
+    public void GetHistory(int min, int max, string username)
+    {
+        StartCoroutine(IGetHistory(min, max, username));
+    }
+
+    private IEnumerator IGetHistory(int min, int max, string userName)
+    {
+        var form = new WWWForm();
+        form.AddField("max", max);
+        form.AddField("min", min);
+        form.AddField("name", userName);
+
+        var www = UnityWebRequest.Post($"{host}/transactionhistory.php", form);
+        yield return www.SendWebRequest();
+        if(www.result != UnityWebRequest.Result.Success) print(www.result);
+        else
+        {
+            try
+            {
+                var json = $"{"{"}{"\"TransactionMessages\""}:{www.downloadHandler.text} {"}"} ";
+                print(json);
+                GetTransactions?.Invoke(JsonUtility.FromJson<TransactionHistory>(json));
+            }
+            catch (Exception e) 
+            {
+                print(e);
+                print(www.downloadHandler.text);
+            }
+        }
+    }
+
+    private IEnumerator ISendCoins(string from, string to, int coins)
+    {
+        var form = new WWWForm();
+        form.AddField("coins", coins);
+        form.AddField("s_name", from);
+        form.AddField("r_name", to);
+
+        var www = UnityWebRequest.Post($"{host}/sendmoney.php", form);
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success) print(www.result);
+        else
+        {
+            try
+            {
+                print(www.downloadHandler.text);
+                SendCoinsMessage?.Invoke(JsonUtility.FromJson<SendTransactionMessage>(www.downloadHandler.text));
+            }
+            catch
+            {
+                print(www.downloadHandler.text);
+            }
+        }
+    }
+
     private IEnumerator IAddCoins(int coins, int id)
     {
         var form = new WWWForm();
@@ -83,27 +146,29 @@ public class ApiManager : MonoBehaviour
         form.AddField("username", username);
         form.AddField("password", password);
 
-        var www = UnityWebRequest.Post($"{host}/login.php", form);
-        yield return www.SendWebRequest();
-        if (www.result != UnityWebRequest.Result.Success) print(www.result);
-        else 
+        using (UnityWebRequest www = UnityWebRequest.Post($"{host}/login.php", form))
         {
-
-            try
+            yield return www.SendWebRequest();
+            if (www.result != UnityWebRequest.Result.Success) print(www.result);
+            else
             {
+                try
+                {
+                    LoggedIn?.Invoke(JsonUtility.FromJson<User>(www.downloadHandler.text));
+                    PlayerPrefs.SetString(PlayerPrefsNames.USER_LOGIN, username);
+                    PlayerPrefs.SetString(PlayerPrefsNames.USER_PASSWORD, password);
 
-                LoggedIn?.Invoke(JsonUtility.FromJson<User>(www.downloadHandler.text));
-                PlayerPrefs.SetString(PlayerPrefsNames.USER_LOGIN, username);
-                PlayerPrefs.SetString(PlayerPrefsNames.USER_PASSWORD, password);
+                }
+                catch (Exception e)
+                {
+                    print(www.downloadHandler.text);
+                    LoginError?.Invoke(www.downloadHandler.text);
+                    print(e.ToString());
+                }
+            };
+        }
 
-            }
-            catch (Exception e)
-            {
-                print(www.downloadHandler.text);
-                LoginError?.Invoke(www.downloadHandler.text);
-                print(e.ToString());
-            }
-        };
+
 
     }
 
@@ -129,11 +194,8 @@ public class ApiManager : MonoBehaviour
     }
 
 
-
     private string GetResult(UnityWebRequest w)
     {
-
-
         return w.downloadHandler.text;
     }
 
