@@ -22,5 +22,9 @@ public class CheckServerBuild : MonoBehaviour
         {
             SceneManager.LoadScene(1);
         }
+        else
+        {
+            ApiManager.instance.GetActivePlayers();
+        }
     }
 }

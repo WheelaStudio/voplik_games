@@ -62,12 +62,12 @@ public class Transactions : MonoBehaviour
                 var h = history.TransactionMessages[i];
                 if (h.To == UserController.Shared.User.UserName)
                 {
-                    texts[i].text = $"{h.Sum} от {h.From}";
+                    texts[i].text = $"{h.Sum} от {h.From} {h.Date}";
                     texts[i].color = Color.green;
                 }
                 else
                 {
-                    texts[i].text = $"{h.Sum} игроку {h.To}";
+                    texts[i].text = $"{h.Sum} игроку {h.To} {h.Date}";
                     texts[i].color = Color.red;
                 }
             }
@@ -140,6 +140,7 @@ public class TransactionMessage
     public string To;
     public int Sum;
     public int Id;
+    public string Date;
 }
 
 public class SendTransactionMessage

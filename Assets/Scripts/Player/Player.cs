@@ -33,7 +33,8 @@ public class Player : NetworkBehaviour
     [SerializeField] private int coins;
     [SyncVar(hook = nameof(SyncCoins))] private int syncCoins;
     public int Coins { get => coins; }
-
+    public List<GameObject> activeBullets;
+    public bool CanBeKilled;
 
 
     private void SyncCoins(int oldValue, int newValue)
@@ -132,16 +133,29 @@ public class Player : NetworkBehaviour
 
     private void OnDestroy()
     {
+        if (isServer)
+        {
+            if (isServer)
+            {
+                ApiManager.instance.SetActivePlayers(NetworkServer.connections.Count);
+            }
+        }
         if (isLocalPlayer)
         {
             print("Killed");
-            SceneManager.LoadScene(0);
             NetworkClient.Disconnect();
             UserController.Shared.AddCoins(Coins);
+            Destroy(UserController.Shared.gameObject);
+            Destroy(ApiManager.instance.gameObject);
+            SceneManager.LoadScene(0);
         }
     }
     public void Kill()
     {
+        foreach (var b in activeBullets)
+        {
+            NetworkServer.Destroy(b);
+        }
         NetworkServer.Destroy(gameObject);
     }
 

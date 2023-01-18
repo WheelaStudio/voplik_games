@@ -28,6 +28,14 @@ public class BulletController : NetworkBehaviour
         OnMove?.Invoke(thisRigidbody, startPos);
     }
 
+    private void Update()
+    {
+        if(Player == null && isServer)
+        {
+            NetworkServer.Destroy(gameObject);
+        }
+    }
+
     public void SetPlayer(Player p)
     {
         player = p;
@@ -47,7 +55,7 @@ public class BulletController : NetworkBehaviour
     {
         if(collision.gameObject.TryGetComponent<Player>(out var p) && p != player)
         {
-            if (isServer)
+            if (isServer && p.CanBeKilled)
             {
                 var text = $"{player.User.UserName} killed {p.User.UserName}";
                 RpcKillChat(text);

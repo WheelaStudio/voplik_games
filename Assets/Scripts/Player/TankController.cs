@@ -1,5 +1,6 @@
 using Mirror;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Player))]
@@ -11,14 +12,20 @@ public class TankController : Player
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float maxBulletDistance;
     [SerializeField] private float fireRate;
-
+    [SerializeField] private float noKillTime;
     [SerializeField] private bool canShoot = true;
     private Rigidbody2D rb;
     private Map map;
     private Vector2 mapGlobalSize;
 
+
     private void Start()
     {
+        StartCoroutine(ChangeKill());
+        if (isServer)
+        {
+            ApiManager.instance.SetActivePlayers(NetworkServer.connections.Count);
+        }
         if(isLocalPlayer)
         {
             map = Map.instance;
@@ -30,6 +37,13 @@ public class TankController : Player
         {
             StartCoroutine(SetText());
         }
+    }
+
+    private IEnumerator ChangeKill()
+    {
+        yield return new WaitForSeconds(noKillTime);
+        CanBeKilled = true;
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     private void Awake()
@@ -52,6 +66,7 @@ public class TankController : Player
         controller.OnMove.AddListener(HandleBulletMove);
         clone.SetActive(true);
         print("Shoot");
+        activeBullets.Add(clone);
         NetworkServer.Spawn(clone);
     }
 
@@ -123,6 +138,7 @@ public class TankController : Player
 
         if(Vector3.Distance(startPos, t.position) >= maxBulletDistance)
         {
+            activeBullets.Remove(t.gameObject);
             Destroy(t.gameObject);
         }
     }

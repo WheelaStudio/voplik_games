@@ -9,13 +9,16 @@ public class NetManager : NetworkManager
     private UserController controller;
     public TextMeshPro nickname;
     private Map map;
+    [SerializeField] private bool autoConnect;
+    public bool MenuScene = true;
+
 
     public override void Start()
     {
         base.Start();
         controller = UserController.Shared;
         map = Map.instance;
-        if (!CheckServerBuild.ServerBuild())
+        if (!CheckServerBuild.ServerBuild() && autoConnect)
         {
             StartClient();
         }

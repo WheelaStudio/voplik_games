@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
@@ -21,6 +23,7 @@ public class ApiManager : MonoBehaviour
     public UnityEvent<string> RegisterMessage = new UnityEvent<string>();
     public UnityEvent<SendTransactionMessage> SendCoinsMessage = new UnityEvent<SendTransactionMessage>();
     public UnityEvent<TransactionHistory> GetTransactions = new UnityEvent<TransactionHistory>();
+    public UnityEvent<int> GetActivePlayersSuccess = new UnityEvent<int>();
     public static ApiManager instance;
 
     private void Awake()
@@ -32,14 +35,24 @@ public class ApiManager : MonoBehaviour
     private bool IsValidPassword(string p)
     {
         string error = "";
-        if (p.Length < 6)
-            error = "6 or more symbols";
-        else if(p != registerPasswordRepeat.text)
+        if(p != registerPasswordRepeat.text)
             error = "Passwords don't match";
 
         RegisterMessage?.Invoke(error);
+        return p == registerPasswordRepeat.text; 
+    }
 
-        return p.Length >= 6 && p == registerPasswordRepeat.text; 
+    private bool IsValidNickName(string n)
+    {
+        string error = "";
+        if(n.Length > 6)
+        {
+            error = "Maximum 6 characters in nick";
+        }
+
+        RegisterMessage?.Invoke(error);
+
+        return n.Length <= 6 && !string.IsNullOrEmpty(n);
     }
 
     public void Register()
@@ -71,6 +84,42 @@ public class ApiManager : MonoBehaviour
     public void GetHistory(int min, int max, string username)
     {
         StartCoroutine(IGetHistory(min, max, username));
+    }
+
+    public void GetActivePlayers()
+    {
+        StartCoroutine(IGetActivePlayers());
+    }
+
+    public void SetActivePlayers(int count)
+    {
+        StartCoroutine(ISetActivePlayers(count));
+    }
+
+    private IEnumerator IGetActivePlayers()
+    {
+        var www = UnityWebRequest.Get($"{host}/getactiveplayers.php");
+        yield return www.SendWebRequest();
+        if (www.result != UnityWebRequest.Result.Success) print(www.result);
+        else
+        {
+            print(www.downloadHandler.text);
+            GetActivePlayersSuccess?.Invoke(Convert.ToInt32(www.downloadHandler.text));
+        }
+    }
+
+    private IEnumerator ISetActivePlayers(int count)
+    {
+        var form = new WWWForm();
+        form.AddField("count", count);
+
+        var www = UnityWebRequest.Post($"{host}/setactiveplayers.php", form);
+        yield return www.SendWebRequest();
+        if(www.result != UnityWebRequest.Result.Success) print (www.result);
+        else
+        {
+            print(www.downloadHandler.text);
+        }
     }
 
     private IEnumerator IGetHistory(int min, int max, string userName)
@@ -124,6 +173,13 @@ public class ApiManager : MonoBehaviour
         }
     }
 
+    public void WithdrawCoins(int curCoins, int withdraw, int id)
+    {
+        StartCoroutine(IAddCoins(curCoins - withdraw, id));
+    }
+
+
+
     private IEnumerator IAddCoins(int coins, int id)
     {
         var form = new WWWForm();
@@ -174,7 +230,7 @@ public class ApiManager : MonoBehaviour
 
     private IEnumerator RegisterI(string username, string password)
     {
-        if (IsValidPassword(password))
+        if (IsValidPassword(password) && IsValidNickName(username))
         {
             var form = new WWWForm();
             form.AddField("username", username);
