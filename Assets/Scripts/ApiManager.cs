@@ -36,7 +36,7 @@ public class ApiManager : MonoBehaviour
     {
         string error = "";
         if(p != registerPasswordRepeat.text)
-            error = "Passwords don't match";
+            error = "Пароли не совпадают.";
 
         RegisterMessage?.Invoke(error);
         return p == registerPasswordRepeat.text; 
@@ -47,7 +47,7 @@ public class ApiManager : MonoBehaviour
         string error = "";
         if(n.Length > 6)
         {
-            error = "Maximum 6 characters in nick";
+            error = "Максимум 6 знаков.";
         }
 
         RegisterMessage?.Invoke(error);

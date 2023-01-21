@@ -20,6 +20,7 @@ public class Transactions : MonoBehaviour
     [SerializeField] private GameObject text;
     [SerializeField] private TextMeshProUGUI[] texts;
     [SerializeField] private Button btn;
+    private Message currentMsg;
     private int step;
     private int factor = 1;
 
@@ -86,6 +87,7 @@ public class Transactions : MonoBehaviour
         if (coins >= sendCoins)
         {
             api.SendCoins(thisNickname, nick.text, sendCoins);
+            currentMsg = new Message($"Отправлено {sendCoins} монет {nick.text}");
         }
         else
         {
@@ -117,6 +119,7 @@ public class Transactions : MonoBehaviour
                 var login = PlayerPrefs.GetString(PlayerPrefsNames.USER_LOGIN);
                 var password = PlayerPrefs.GetString(PlayerPrefsNames.USER_PASSWORD);
                 api.Login(login, password);
+                MenuMessages.instance.CreateMessage(currentMsg);
                 break;
 
             case SendTransactionMessage.Log.Warning:

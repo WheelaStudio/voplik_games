@@ -73,7 +73,7 @@ public class TankController : Player
 
     public void HandleShoot()
     {
-        if (canShoot)
+        if (canShoot && CanBeKilled)
         {
             StartCoroutine(ShootI());
         }

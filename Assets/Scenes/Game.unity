@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cc166c8503de9d47a879d304c32fbc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
+  dontDestroyOnLoad: 0
   runInBackground: 1
   autoStartServerBuild: 1
   autoConnectClientBuild: 1
@@ -178,8 +178,8 @@ MonoBehaviour:
   offlineScene: 
   onlineScene: 
   transport: {fileID: 83407212}
-  networkAddress: 217.107.34.98
-  maxConnections: 21
+  networkAddress: localhost
+  maxConnections: 50
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 4130898304196731977, guid: 4eecb880512d81f4db7467b64172ff78, type: 3}
   autoCreatePlayer: 0
@@ -460,12 +460,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.12
+  m_fontSize: 35
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 26.12
+  m_fontSizeMax: 35
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 4096
@@ -537,7 +537,7 @@ RectTransform:
   m_GameObject: {fileID: 569125824}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 139301782}
@@ -545,8 +545,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.000030518, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.000030517578}
+  m_SizeDelta: {x: 0.000030517578, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &569125826
 MonoBehaviour:
@@ -952,7 +952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 756494a1094f230479fce79af77ee1df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {x: 10, y: 10}
+  grid: {x: 5, y: 5}
   additionlGrid: {x: 0, y: 0}
   tile: {fileID: 8919121629487555761, guid: 0c76cb7fd06ee154c886e6e1dd13e2eb, type: 3}
   tileSize: {x: 10, y: 10}

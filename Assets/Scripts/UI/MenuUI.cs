@@ -15,10 +15,16 @@ public class MenuUI : MonoBehaviour
     private User user;
 
     [SerializeField] private int playerCount;
+    [SerializeField] private MenuMessages messages;
 
     private void Awake()
     {
         instance = this;
+    }
+
+    private void Start()
+    {
+        messages = MenuMessages.instance;
     }
 
     public void SetActivePlayers(int p)
@@ -39,7 +45,8 @@ public class MenuUI : MonoBehaviour
         nickname.text = user.UserName;
         if(playerCount >= 50)
         {
-            serverError.text = "Сервер перегружен";
+            var msg = new Message("Сервер перегружен, зайдите позже.", MessageTypes.Error);
+            messages.CreateMessage(msg);
 
         }
         playerCountText.text = $"В игре: {playerCount}";
@@ -49,9 +56,10 @@ public class MenuUI : MonoBehaviour
     {
         if (user.Coins < 10)
         {
-            print("Not enough coins");
+            var msg = new Message("Недостаточно монет.", MessageTypes.Error);
+            MenuMessages.instance.CreateMessage(msg);
         }
-        else if (playerCount < 50) { }
+        if (playerCount < 50 && user.Coins >= 10)
         {
             UserController.Shared.AddCoins(-10);
             SceneManager.LoadScene(1);
