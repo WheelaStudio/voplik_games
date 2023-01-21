@@ -84,14 +84,21 @@ public class Transactions : MonoBehaviour
 
         var sendCoins = Convert.ToInt32(sum.text);
 
-        if (coins >= sendCoins)
+
+
+        if (coins >= sendCoins && nick.text != thisNickname)
         {
             api.SendCoins(thisNickname, nick.text, sendCoins);
             currentMsg = new Message($"Отправлено {sendCoins} монет {nick.text}");
         }
-        else
+        else if(coins < sendCoins)
         {
             errorText.text = "Недостаточно монет";
+        }
+        else if(nick.text == thisNickname) 
+        {
+            var msg = new Message("Нельзя отправить монеты самому себе", MessageTypes.Error);
+            MenuMessages.instance.CreateMessage(msg);
         }
     }
 

@@ -14,6 +14,7 @@ public class TankController : Player
     [SerializeField] private float fireRate;
     [SerializeField] private float noKillTime;
     [SerializeField] private bool canShoot = true;
+    private Animator animator;
     private Rigidbody2D rb;
     private Map map;
     private Vector2 mapGlobalSize;
@@ -37,6 +38,7 @@ public class TankController : Player
         {
             StartCoroutine(SetText());
         }
+        animator = GetComponent<Animator>();
     }
 
     private IEnumerator ChangeKill()
@@ -96,6 +98,9 @@ public class TankController : Player
 
     public void HandleMove(Vector2 dir)
     {
+        
+        animator.SetBool("move", dir != Vector2.zero );
+
         var step = Vector2.zero;
         if (dir.x != 0)
         {
@@ -120,6 +125,7 @@ public class TankController : Player
 
 
         rb.MovePosition(transform.position + (Vector3)step);
+
         transform.position = ClampPosition(transform.position);
 
     }
